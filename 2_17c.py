@@ -1,11 +1,6 @@
 
 from numpy import *
 import matplotlib.pyplot as plt
-import numdifftools as nd
-
-
-def func(x):
-    return log(1+exp(dot(x,x)))
     
 
 ###### ML Algorithm functions ######
@@ -23,15 +18,15 @@ def newtons_method(w0):
     max_its = 100
     while iter <= max_its:
         # take gradient step
-        grad = gradient(g_path[-1])
-        hess = nd.Hessian(func, n=w)
-        w = w - linalg.pinv(hess)*grad
+        grad = (2*exp(dot(w,w))/(1+exp(dot(w,w))))*w
+        hess = (4*exp(dot(w,w))/(1+exp(dot(w,w)))**2)*outer(w,w) + (2*exp(dot(w,w))/(1+exp(dot(w,w))))*identity(10)
+        # print hess
+
+        w = w - dot(linalg.pinv(hess),grad)
 
         # update path containers
         # w_path.append(w)
-        g_path1.append(dot(w1,w1))
-        g_path2.append(dot(w2,w2))
-        g_path3.append(dot(w3,w3))
+        g_path.append(dot(w,w))
         iter+= 1
     
 
@@ -49,11 +44,12 @@ def main():
     
     g_path = newtons_method(w0)    # perform newton's method
     # print len(g_path)
-    plt.plot(linspace(1,101,101), g_path1)
+    plt.plot(linspace(1,101,101), g_path)
       
     # plt.legend(loc=4)
     plt.xlabel('iterations')
     plt.ylabel('objective value')
+    plt.axis([0,20,0,15])
     plt.show()
 
 
