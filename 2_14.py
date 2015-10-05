@@ -58,7 +58,7 @@ def main():
     # print len(g_path)
     plt.plot(linspace(1,101,101), g_path1, label='alpha1=0.001')
     plt.plot(linspace(1,101,101), g_path2, label='alpha2=0.1')
-    plt.plot(linspace(1,101,101), g_path3, label='alpha1=1.001')   
+    plt.plot(linspace(1,101,101), g_path3, label='alpha3=1.001')   
     plt.legend(loc=4)
     plt.xlabel('iterations')
     plt.ylabel('objective value')
