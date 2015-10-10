@@ -19,21 +19,21 @@ def main():
     w = w_opt[1]
     print 'b_opt = ', b, '  w_opt = ', w
     
-    fitline = b + w*fxs
+    fitline = b + w/linspace(1,105,105)
 
-    plt.plot(xs, y, 'o')
-    plt.plot(xs, fitline)
+    plt.plot(ohms_data[:,0], ohms_data[:,1], 'o')
+    plt.plot(linspace(1,105,105), fitline)
     plt.ylim([0,5])
     plt.xlim([0,105])
     plt.xlabel('x')
     plt.ylabel('y')
     plt.show()
 
-    plt.plot(fxs, y, 'o')
-    plt.plot(fxs, fitline)
-    plt.xlabel('f(x)=1/x')
-    plt.ylabel('y')
-    plt.show()
+    # plt.plot(fxs, y, 'o')
+    # plt.plot(fxs, fitline)
+    # plt.xlabel('f(x)=1/x')
+    # plt.ylabel('y')
+    # plt.show()
 
 
 main()
