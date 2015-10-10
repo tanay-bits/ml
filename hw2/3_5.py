@@ -20,16 +20,16 @@ def main():
     w = w_opt[1]
     print 'b_opt = ', b, 'w_opt = ', w
     
-    fitline = b + w*fxs
+    fitline = b + w*sin(2*pi*linspace(0,1,50))
 
-    plt.plot(xs, y, '*')
-    plt.plot(xs, fitline)
+    plt.plot(xs, y, 'o')
+    plt.plot(linspace(0,1,50), fitline)
     plt.xlabel('x')
     plt.ylabel('y')
     plt.show()
 
     plt.plot(fxs, y, '*')
-    plt.plot(fxs, fitline)
+    plt.plot(sin(2*pi*linspace(0,1,50)), fitline)
     plt.xlabel('f(x)')
     plt.ylabel('y')
     plt.show()

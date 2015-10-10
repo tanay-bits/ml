@@ -20,10 +20,10 @@ def main():
     w = w_opt[1]
     print 'b_opt = ', b, 'w_opt = ', w
     
-    fitline = 1/(1+exp(-b-w*xs))
+    fitline = 1/(1+exp(-b-w*linspace(0,24,25)))
 
     plt.plot(xs, y, 'o')
-    plt.plot(xs, fitline)
+    plt.plot(linspace(0,24,25), fitline)
     plt.xlabel('x')
     plt.ylabel('y')
     plt.show()
