@@ -11,6 +11,21 @@ def load_data():
 
 
 ###### ML Algorithm functions ######
+def sigmoid(t):
+    return 1/(1+exp(-t))
+
+
+def grad_summation(X,y,w):
+    g = zeros(w.shape)
+    
+    for p in range(1, size(y)+1):
+        s = -sigmoid(-y[p-1,0]*dot(X[:,p-1],w)[0])*y[p-1,0]*X[:,p-1]
+        s = array([[x] for x in s])
+        g = g + s
+
+    return g
+
+
 # run gradient descent
 def gradient_descent(X,y):
     # use compact notation and initialize
@@ -27,7 +42,7 @@ def gradient_descent(X,y):
     alpha = 10**(-1)
     while linalg.norm(grad) > 10**(-5) and k <= max_its:
         # compute gradient
-        grad =     # YOUR CODE GOES HERE
+        grad = grad_summation(X,y,w)    # YOUR CODE GOES HERE
 
         # take gradient step
         w = w - alpha*grad
