@@ -16,20 +16,20 @@ def sigmoid(t):
 
 
 def grad_summation(X,y,w):
-    # g = zeros(w.shape)
+    g = zeros(w.shape)
     
-    t = -y*dot(X.T,w)
-    r = sigmoid(t)
-    z = y*r
+    # t = -y*dot(X.T,w)
+    # r = sigmoid(t)
+    # z = y*r
     # onevec = ones(r.shape)
     
     # g = dot(dot(X, diagflat(z)), onevec)
-    g = -dot(X,z)
+    # g = dot(X,z)
     
-    # for p in range(1, size(y)+1):
-    #     s = -sigmoid(-y[p-1,0]*dot(X[:,p-1],w)[0])*y[p-1,0]*X[:,p-1]
-    #     s = array([[x] for x in s])
-    #     g = g + s
+    for p in range(1, size(y)+1):
+        s = -sigmoid(-y[p-1,0]*dot(X[:,p-1],w)[0])*y[p-1,0]*X[:,p-1]
+        s = array([[x] for x in s])
+        g = g + s
 
     return g
 
@@ -57,7 +57,6 @@ def gradient_descent(X,y):
 
         # update path containers
         k += 1
-        print(linalg.norm(grad))
 
     return w
 

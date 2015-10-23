@@ -1,6 +1,8 @@
 from numpy import *
 import matplotlib.pyplot as plt
 
+max_its = 10
+
 # prepare the data
 def prep_data():
     
@@ -53,15 +55,14 @@ def soft_hess_maker(X,y,w,N,P):
     return h
 
 
-def soft_counting_cost(X,y,w,P):
+def counting_cost(X,y,w,P):
     count = 0
 
     for p in range(1, P+1):
         Xp = X[:,p-1]
         yp = y[p-1,0]
-        choose_bw = array([0, sign(-yp*dot(Xp,w)[0])])
-        maxp = amax(choose_bw)
-        count = count + maxp
+        if sign(-yp*dot(Xp,w)[0]) > 0:
+            count = count + 1
 
     return count
 
@@ -99,24 +100,23 @@ def sqm_hess_maker(X,y,w,N,P):
     return h
 
 
-def sqm_counting_cost(X,y,w,P):
-    count = 0
+# def sqm_counting_cost(X,y,w,P):
+#     count = 0
 
-    for p in range(1, P+1):
-        Xp = X[:,p-1]
-        yp = y[p-1,0]
-        choose_bw = array([0, sign(1 - yp*dot(Xp,w)[0])])
-        maxp = amax(choose_bw)
-        count = count + maxp
+#     for p in range(1, P+1):
+#         Xp = X[:,p-1]
+#         yp = y[p-1,0]
+#         if sign(-yp*dot(Xp,w)[0]) > 0:
+#             count = count + 1
 
-    return count
+#     return count
 
 
 
 # Newton's method
 def newtons_method(X,y,N,P):
     w_soft = zeros((N+1,1))
-    w_sqm = random.randn(N+1,1)
+    w_sqm = zeros((N+1,1))
     
     misses_soft = []
     misses_sqm = []
@@ -125,7 +125,6 @@ def newtons_method(X,y,N,P):
     sqm_grad = 1
     
     k = 1
-    max_its = 10
     
     while k <= max_its:
         
@@ -134,7 +133,7 @@ def newtons_method(X,y,N,P):
        
         w_soft = w_soft - dot(linalg.pinv(soft_hess),soft_grad)
 
-        misses_soft_k = soft_counting_cost(X,y,w_soft,P)
+        misses_soft_k = counting_cost(X,y,w_soft,P)
         misses_soft.append(misses_soft_k)
 
 
@@ -143,7 +142,7 @@ def newtons_method(X,y,N,P):
         
         w_sqm = w_sqm - dot(linalg.pinv(sqm_hess),sqm_grad)
 
-        misses_sqm_k = sqm_counting_cost(X,y,w_sqm,P)
+        misses_sqm_k = counting_cost(X,y,w_sqm,P)
         misses_sqm.append(misses_sqm_k)
 
         k += 1
@@ -169,8 +168,8 @@ def main():
     print sqm_grad
     print misses_sqm
 
-    plt.plot(linspace(1,10,10), misses_soft)
-    plt.plot(linspace(1,10,10), misses_sqm)
+    plt.plot(linspace(1,max_its,max_its), misses_soft)
+    plt.plot(linspace(1,max_its,max_its), misses_sqm)
       
     # plt.legend(loc=4)
     plt.xlabel('iterations')
