@@ -53,7 +53,7 @@ def soft_hess_maker(X,y,w,N,P):
     return h
 
 
-def counting_cost(X,y,w,P):
+def soft_counting_cost(X,y,w,P):
     count = 0
 
     for p in range(1, P+1):
@@ -68,26 +68,87 @@ def counting_cost(X,y,w,P):
 
 
 
-# run Newton's method
+def sqm_grad_maker(X,y,w,P):
+    g = zeros(w.shape)
+    
+    for p in range(1, P+1):
+        Xp = X[:,p-1]
+        yp = y[p-1,0]
+        choose_bw = array([0, 1 - yp*dot(Xp,w)[0]])
+        gp = amax(choose_bw)*yp*Xp
+        gp.shape = w.shape
+        g = g + gp
+
+    g = -2*g
+    return g
+
+
+def sqm_hess_maker(X,y,w,N,P):
+    h = zeros((N+1,N+1))
+
+    for p in range(1, P+1):
+        Xp = X[:,p-1]
+        yp = y[p-1,0]
+
+        if 1 - yp*dot(Xp,w)[0] > 0:
+            Xp.shape = (N+1,1)
+            hp = dot(Xp, Xp.T)
+            h = h + hp
+
+    h = 2*h
+    return h
+
+
+def sqm_counting_cost(X,y,w,P):
+    count = 0
+
+    for p in range(1, P+1):
+        Xp = X[:,p-1]
+        yp = y[p-1,0]
+        choose_bw = array([0, sign(1 - yp*dot(Xp,w)[0])])
+        maxp = amax(choose_bw)
+        count = count + maxp
+
+    return count
+
+
+
+# Newton's method
 def newtons_method(X,y,N,P):
-    w = zeros((N+1,1))
-    misses = []
-    grad = 1
+    w_soft = zeros((N+1,1))
+    w_sqm = random.randn(N+1,1)
+    
+    misses_soft = []
+    misses_sqm = []
+    
+    soft_grad = 1
+    sqm_grad = 1
+    
     k = 1
     max_its = 10
+    
     while k <= max_its:
         
-        grad = soft_grad_maker(X,y,w,P)
-        hess = soft_hess_maker(X,y,w,N,P)
+        soft_grad = soft_grad_maker(X,y,w_soft,P)
+        soft_hess = soft_hess_maker(X,y,w_soft,N,P)
        
-        w = w - dot(linalg.pinv(hess),grad)
+        w_soft = w_soft - dot(linalg.pinv(soft_hess),soft_grad)
 
-        misses_k = counting_cost(X,y,w,P)
-        misses.append(misses_k)
+        misses_soft_k = soft_counting_cost(X,y,w_soft,P)
+        misses_soft.append(misses_soft_k)
+
+
+        sqm_grad = sqm_grad_maker(X,y,w_sqm,P)
+        sqm_hess = sqm_hess_maker(X,y,w_sqm,N,P)
+        
+        w_sqm = w_sqm - dot(linalg.pinv(sqm_hess),sqm_grad)
+
+        misses_sqm_k = sqm_counting_cost(X,y,w_sqm,P)
+        misses_sqm.append(misses_sqm_k)
 
         k += 1
 
-    return w, grad, misses
+    return w_soft, soft_grad, misses_soft, w_sqm, sqm_grad, misses_sqm
 
 
 
@@ -96,15 +157,20 @@ def main():
     
     X,y,N,P = prep_data()
 
-    # run gradient descent
-    w, grad, misses = newtons_method(X,y,N,P)
+    # run Newton's method
+    w_soft, soft_grad, misses_soft, w_sqm, sqm_grad, misses_sqm = newtons_method(X,y,N,P)
 
-    # plot everything
-    print w
-    print grad
-    print misses
+    
+    print w_soft
+    print soft_grad
+    print misses_soft
 
-    plt.plot(linspace(1,10,10), misses)
+    print w_sqm
+    print sqm_grad
+    print misses_sqm
+
+    plt.plot(linspace(1,10,10), misses_soft)
+    plt.plot(linspace(1,10,10), misses_sqm)
       
     # plt.legend(loc=4)
     plt.xlabel('iterations')
