@@ -24,7 +24,7 @@ def grad_summation(X,y,w):
     # onevec = ones(r.shape)
     
     # g = dot(dot(X, diagflat(z)), onevec)
-    g = dot(X,z)
+    g = -dot(X,z)
     
     # for p in range(1, size(y)+1):
     #     s = -sigmoid(-y[p-1,0]*dot(X[:,p-1],w)[0])*y[p-1,0]*X[:,p-1]
@@ -57,6 +57,7 @@ def gradient_descent(X,y):
 
         # update path containers
         k += 1
+        print(linalg.norm(grad))
 
     return w
 
