@@ -1,3 +1,6 @@
+###### Python code for exercise 4.9 ######
+##   Tanay Choudhary | NetID: tcp867 ##
+
 from numpy import *
 import matplotlib.pyplot as plt
 
@@ -22,26 +25,18 @@ def prep_data():
 def sigmoid(t):
     return 1/(1+exp(-t))
 
-
-def soft_grad_maker(X,y,w,P):
-    g = zeros(w.shape)
+# Vectorized gradient for softmax cost function
+def soft_grad_maker(X,y,w):
     
-    # t = -y*dot(X.T,w)
-    # r = sigmoid(t)
-    # z = y*r
-    # onevec = ones(r.shape)
+    t = -y*dot(X.T,w)
+    r = sigmoid(t)
+    z = y*r
     
-    # g = dot(dot(X, diagflat(z)), onevec)
-    # g = dot(X,z)
-    
-    for p in range(1, P+1):
-        gp = -sigmoid(-y[p-1,0]*dot(X[:,p-1],w)[0])*y[p-1,0]*X[:,p-1]
-        gp.shape = w.shape
-        g = g + gp
+    g = -dot(X,z)
 
     return g
 
-
+# Hessian for softmax cost function
 def soft_hess_maker(X,y,w,N,P):
     h = zeros((N+1,N+1))
     
@@ -54,8 +49,8 @@ def soft_hess_maker(X,y,w,N,P):
 
     return h
 
-
-def soft_counting_cost(X,y,w,P):
+# Cost function to determine number of misclassifications
+def counting_cost(X,y,w,P):
     count = 0
 
     for p in range(1, P+1):
@@ -68,8 +63,7 @@ def soft_counting_cost(X,y,w,P):
     return count
 
 
-
-
+# Gradient for squared margin perceptron
 def sqm_grad_maker(X,y,w,P):
     g = zeros(w.shape)
     
@@ -84,7 +78,7 @@ def sqm_grad_maker(X,y,w,P):
     g = -2*g
     return g
 
-
+# Hessian for squared margin perceptron
 def sqm_hess_maker(X,y,w,N,P):
     h = zeros((N+1,N+1))
 
@@ -101,24 +95,12 @@ def sqm_hess_maker(X,y,w,N,P):
     return h
 
 
-def sqm_counting_cost(X,y,w,P):
-    count = 0
-
-    for p in range(1, P+1):
-        Xp = X[:,p-1]
-        yp = y[p-1,0]
-        choose_bw = array([0, sign(1 - yp*dot(Xp,w)[0])])
-        maxp = amax(choose_bw)
-        count = count + maxp
-
-    return count
-
 
 
 # Newton's method
 def newtons_method(X,y,N,P):
     w_soft = zeros((N+1,1))
-    w_sqm = array([[10],[0],[0],[0],[0],[0],[0],[0],[0]])
+    w_sqm = zeros((N+1,1))
     
     misses_soft = []
     misses_sqm = []
@@ -131,12 +113,12 @@ def newtons_method(X,y,N,P):
     
     while k <= max_its:
         
-        soft_grad = soft_grad_maker(X,y,w_soft,P)
+        soft_grad = soft_grad_maker(X,y,w_soft)
         soft_hess = soft_hess_maker(X,y,w_soft,N,P)
        
         w_soft = w_soft - dot(linalg.pinv(soft_hess),soft_grad)
 
-        misses_soft_k = soft_counting_cost(X,y,w_soft,P)
+        misses_soft_k = counting_cost(X,y,w_soft,P)
         misses_soft.append(misses_soft_k)
 
 
@@ -145,7 +127,7 @@ def newtons_method(X,y,N,P):
         
         w_sqm = w_sqm - dot(linalg.pinv(sqm_hess),sqm_grad)
 
-        misses_sqm_k = sqm_counting_cost(X,y,w_sqm,P)
+        misses_sqm_k = counting_cost(X,y,w_sqm,P)
         misses_sqm.append(misses_sqm_k)
 
         k += 1
@@ -156,25 +138,26 @@ def newtons_method(X,y,N,P):
 
 ### main loop ###
 def main():
-    
+    # Load and prepare the data
     X,y,N,P = prep_data()
 
-    # run Newton's method
+    # Run Newton's method and get the relevant parameters
     w_soft, soft_grad, misses_soft, w_sqm, sqm_grad, misses_sqm = newtons_method(X,y,N,P)
 
-    
-    print w_soft
-    print soft_grad
-    print misses_soft
+    ### Uncomment below for debugging ###
+    # print w_soft
+    # print soft_grad
+    # print misses_soft
+    # print w_sqm
+    # print sqm_grad
+    # print misses_sqm
 
-    print w_sqm
-    print sqm_grad
-    print misses_sqm
 
-    plt.plot(linspace(1,max_its,max_its), misses_soft)
-    plt.plot(linspace(1,max_its,max_its), misses_sqm)
+    # Plots
+    plt.plot(linspace(1,max_its,max_its), misses_soft, label='softmax', linewidth=3)
+    plt.plot(linspace(1,max_its,max_its), misses_sqm, label='squared margin', linewidth=3, linestyle='--')
       
-    # plt.legend(loc=4)
+    plt.legend()
     plt.xlabel('iterations')
     plt.ylabel('number of missclassifications per iteration')
     # plt.axis([0,20,0,15])
