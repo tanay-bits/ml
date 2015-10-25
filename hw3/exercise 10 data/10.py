@@ -74,9 +74,9 @@ def gradient_descent_soft(X,y,N,P):
     
     k = 1
 
-    # tune max_its and alpha to obtain a balance b/w computation time and min number of missclassifications: 
-    max_its = 50
-    alpha = 1
+    # tune max_its and alpha 
+    max_its = 3000
+    alpha = 0.01
 
     
     while k <= max_its:
@@ -106,7 +106,7 @@ def gradient_descent_sqm(X,y,N,P):
     k = 1
 
     # tune max_its and alpha:
-    max_its = 50
+    max_its = 3000
     alpha = 10**(-4)
 
 
@@ -134,14 +134,11 @@ def main():
 
     # run gradient descent for softmax and get the relevant parameters:
     w_soft, soft_grad, misses_soft, iters_soft = gradient_descent_soft(X,y,N,P)
-
-    # print 'final mag of softgrad = ', linalg.norm(soft_grad)
-    print 'missclassifications in final iter for softmax = ', misses_soft[-1]
     
     # run gradient descent for squared margin and get the relevant parameters:
     w_sqm, sqm_grad, misses_sqm, iters_sqm = gradient_descent_sqm(X,y,N,P)
-    
-    # print 'final mag of sqmgrad = ', linalg.norm(sqm_grad)
+        
+    print 'missclassifications in final iter for softmax = ', misses_soft[-1]
     print 'missclassifications in final iter for squared margin = ', misses_sqm[-1]
 
     # plots:
@@ -151,7 +148,6 @@ def main():
     plt.legend()
     plt.xlabel('iterations')
     plt.ylabel('number of missclassifications per iteration')
-    # plt.axis([0,20,0,15])
     plt.show()
 
 main()
