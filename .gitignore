@@ -1,6 +1,7 @@
 *.pdf
 ~*
 *.csv
+*.ipynb
 
 # Compiled source #
 ###################
