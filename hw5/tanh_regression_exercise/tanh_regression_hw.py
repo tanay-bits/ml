@@ -85,10 +85,10 @@ def tanh_grad_descent(x,y,i):
             t2.append(tanh(c[1][0] + xp*v[1][0]))
             t3.append(tanh(c[2][0] + xp*v[2][0]))
             t4.append(tanh(c[3][0] + xp*v[3][0]))
-            s1.append((cosh(c[0][0] + xp*v[0][0]))**-2)
-            s2.append((cosh(c[1][0] + xp*v[1][0]))**-2)
-            s3.append((cosh(c[2][0] + xp*v[2][0]))**-2)
-            s4.append((cosh(c[3][0] + xp*v[3][0]))**-2)
+            s1.append((cosh(c[0][0] + xp*v[0][0]))**(-2))
+            s2.append((cosh(c[1][0] + xp*v[1][0]))**(-2))
+            s3.append((cosh(c[2][0] + xp*v[2][0]))**(-2))
+            s4.append((cosh(c[3][0] + xp*v[3][0]))**(-2))
 
         q = asarray(q).reshape(P,1)
         t1 = asarray(t1).reshape(P,1)
@@ -121,7 +121,7 @@ def tanh_grad_descent(x,y,i):
         grad_v3 = 2*dot(l_p.T, q*x*s3)*w[2][0]
         grad_v4 = 2*dot(l_p.T, q*x*s4)*w[3][0]
 
-        grad_v = vstack((grad_c1[0], grad_c2[0], grad_c3[0], grad_c4[0]))
+        grad_v = vstack((grad_v1[0], grad_v2[0], grad_v3[0], grad_v4[0]))
 
 
         # take gradient steps
