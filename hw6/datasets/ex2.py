@@ -1,5 +1,11 @@
 from pylab import *
 
+def plot_dgf(ax):
+    s = asarray(linspace(0,1,100))
+    # s.shape = (size(s),1)
+    f = exp(3*s)*sin(3*pi*pi*(s-0.5))/(3*pi*pi*(s-0.5))
+    ax.plot(s,f,'--', linewidth = 2, label='data gen fn')
+
 def k_fold_cross_validation(data, K): 
     trains = [0]*K
     tests = [0]*K
@@ -81,7 +87,7 @@ def plot_model(w,D,ax):
         f.append(w[2*m]*sin(2*pi*m*s))
     f = asarray(f)
     f = sum(f,axis = 0) + w[0]
-    ax.plot(s,f,'-r', linewidth = 2)
+    ax.plot(s,f,'-r', linewidth = 2, label='fit')
 
 # plot mean squared error
 def plot_mses(mses,mses_t,deg):
@@ -162,7 +168,9 @@ def main():
     ax.yaxis.set_ticks(arange(-2,5.1))
 
     plot_model(wbest,D_best,ax)
+    plot_dgf(ax)
 
+    legend()
     show()
 
 main()
