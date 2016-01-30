@@ -3,7 +3,7 @@ from pylab import *
 # load the data
 def load_data():
     # load data
-    data = matrix(genfromtxt('noisy_sin_samples.csv', delimiter=','))
+    data = matrix(genfromtxt('my.csv', delimiter=','))
     x = asarray(data[:,0])
     x.shape = (size(x),1)
     y = asarray(data[:,1])
@@ -17,31 +17,31 @@ def plot_data(x,y,deg):
         axs[0,i].scatter(x,y, s = 30,color = '0')
         axs[0,i].set_xlabel('$x$',fontsize=20,labelpad = -2)
         axs[0,i].set_ylabel('$y$',fontsize=20,rotation = 0,labelpad = 0)
-        axs[0,i].set_xlim(0,1)
-        axs[0,i].set_ylim(-1.5,1.5)
-        axs[0,i].set_aspect(0.333)
+        axs[0,i].set_xlim(0,0.0525000)
+        axs[0,i].set_ylim(0,0.00720889)
+        axs[0,i].set_aspect(3)
         s = 'D = ' + str(deg[i])
         axs[0,i].set_title(s,fontsize=15)
-        axs[0,i].xaxis.set_ticks(arange(0,1.1))
-        axs[0,i].yaxis.set_ticks(arange(-1,1.1))
+        axs[0,i].xaxis.set_ticks(arange(0,0.0526))
+        axs[0,i].yaxis.set_ticks(arange(0,0.0073))
 
         axs[1,i].scatter(x,y, s = 30,color = '0')
         axs[1,i].set(aspect = 'equal')
         axs[1,i].set_xlabel('$x$',fontsize=20,labelpad = -4)
         axs[1,i].set_ylabel('$y$',fontsize=20,rotation = 0,labelpad = 0)
-        axs[1,i].set_xlim(0,1)
-        axs[1,i].set_ylim(-1.5,1.5)
-        axs[1,i].set_aspect(0.333)
+        axs[1,i].set_xlim(0,0.0525000)
+        axs[1,i].set_ylim(0,0.00720889)
+        axs[1,i].set_aspect(3)
         s = 'D = ' + str(deg[i + 3])
         axs[1,i].set_title(s,fontsize=15)
-        axs[1,i].xaxis.set_ticks(arange(0,1.1))
-        axs[1,i].yaxis.set_ticks(arange(-1,1.1))
+        axs[1,i].xaxis.set_ticks(arange(0,0.0526))
+        axs[1,i].yaxis.set_ticks(arange(0,0.0073))
 
     return(axs)
 
 # plot learned model
 def plot_model(w,D,ax):
-    s = asarray(linspace(0,1,100))
+    s = asarray(linspace(0,0.08,1000))
     s.shape = (size(s),1)
     f = []
     for m in range(1,D+1):
@@ -81,14 +81,14 @@ def fourier_features(x,D):
 
 def main():
     # 2*number of fourier features to use
-    deg = array([1,3,5,7,9,15])
+    deg = array([4,5,6,7,8,9])
 
     # load and plot the data
     x,y = load_data()
     axs = plot_data(x,y,deg)
 
     # generate fourier features and fit to data
-    mses = []
+    # mses = []
     for D in range(0,6):
         # generate fourier feature transformation
         F = fourier_features(x,deg[D])
@@ -97,8 +97,8 @@ def main():
         w = dot(linalg.pinv(dot(F,F.T)),dot(F,y))
 
         # compute mean squared error with current model
-        new_mse = linalg.norm(dot(F.T,w) - y)/size(y)
-        mses.append(new_mse)
+        # new_mse = linalg.norm(dot(F.T,w) - y)/size(y)
+        # mses.append(new_mse)
 
         # plot fit to data
         n = 0
@@ -109,7 +109,7 @@ def main():
         plot_model(w,deg[D],axs[n,m])
 
     # plot mean squared error for each degree tried
-    plot_mses(mses,deg)
+    # plot_mses(mses,deg)
 
     show()
 
