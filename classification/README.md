@@ -26,7 +26,7 @@ Since this time gradient descent is used, it takes way too many iterations to ac
 
 Multi-Class Classification
 ------------------------------
-*one\_versus_all.py* performs One-vs-All classification on a 4-class dataset, i.e., finding the optimum weights for 4 two-class classification problems (using Newton's method on the softmax cost, in this case).
+*one\_versus_all.py* performs One-vs-All classification on a 4-class dataset, i.e., finding the optimum weights for 4 two-class classification problems (using Newton's method on the softmax cost, in this case), and then fusing the classifications by determining which class is each point closest to:
 
 ![alt txt](https://raw.githubusercontent.com/tanay-bits/ml/newyear/classification/ova4class.png)
 
