@@ -8,4 +8,4 @@ Basic Numerical Optimization
 
 ![nm](https://raw.githubusercontent.com/tanay-bits/ml/newyear/basic%20numerical%20optimization/nm.png)
 
-Even though the cost functions are not the same in the above cases, in general Newton's method converges much faster (for convex cost functions; regularizers should be used for non-convex functions). 
+Even though the cost functions are not the same in the above cases, in general Newton's method converges much faster (for convex cost functions; regularizers should be used for non-convex functions) than gradient descent. 
