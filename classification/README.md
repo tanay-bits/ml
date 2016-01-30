@@ -10,7 +10,7 @@ Instead of looping and summing over the entire dataset, which would be slow, a v
 
 ![4_3](https://raw.githubusercontent.com/tanay-bits/ml/newyear/classification/4_3c.png)
 
-*breastcancer.py* compares the efficacy of the softmax and squared margin costs in distinguishing healthy from cancerous tissue using the entire breast cancer dataset as training data. This dataset consists of P = 569 datapoints, with each datapoint having nine medically valuable features (i.e., N = 9). The squared-margin cost minimization problem is:
+*breastcancer.py* compares the efficacy of the softmax and squared margin costs in distinguishing healthy from cancerous tissue using the entire breast cancer dataset as training data. This dataset consists of P = 569 datapoints, with each datapoint having nine medically valuable features (i.e., N = 9). The **squared-margin** cost minimization problem is:
 
 ![sm](https://raw.githubusercontent.com/tanay-bits/ml/newyear/classification/sqmargin.png)
 
