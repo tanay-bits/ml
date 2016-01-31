@@ -32,3 +32,25 @@ Here x and y is the input and output data respectively, i is a counter that load
 
 ![altxt](https://raw.githubusercontent.com/tanay-bits/ml/newyear/automatic%20feature%20design%20for%20regression/5.png)
 
+Cross-Validation for Regression
+-------------------------------
+####Hold out cross-validation
+
+*holdout.py* performs hold out cross-validation on the *wavy\_data.csv* dataset. We start by randomly splitting the dataset into k = 3 equal sized folds (keeping 2 folds as training, and 1 fold as testing data). Using M Fourier basis features in the range M = 2, 4, 6, ..., 16 (or likewise degree D in the range D = 1, 2, ..., 8) we obtain the training (shown in blue below) and testing error (shown in green below) for each D, as well as the best (i.e., the lowest test error) model fit to the data.
+
+![altxt](https://raw.githubusercontent.com/tanay-bits/ml/newyear/automatic%20feature%20design%20for%20regression/cv2a.png)
+
+![altxt](https://raw.githubusercontent.com/tanay-bits/ml/newyear/automatic%20feature%20design%20for%20regression/cv2b.png)
+
+![altxt](https://raw.githubusercontent.com/tanay-bits/ml/newyear/automatic%20feature%20design%20for%20regression/cv2c.png)
+
+####K-folds cross-validation
+
+*kfolds.py* performs a version of k-folds cross validation called 'leave-one-out' cross-validation on the *galileo\_ramp\_data.csv* dataset. We start by randomly splitting the dataset of P = 6 points into k = 6 equal sized folds (keeping 5 folds as training, and 1 fold as testing data during each round of cross-validation). Using the polynomial basis features with degree in the range D = 1, 2, ..., 6 we obtain the average training and testing error for each D, as well as the best (i.e., the lowest average test error) model fit to the data.
+
+![altxt](https://raw.githubusercontent.com/tanay-bits/ml/newyear/automatic%20feature%20design%20for%20regression/cv3a.png)
+
+![altxt](https://raw.githubusercontent.com/tanay-bits/ml/newyear/automatic%20feature%20design%20for%20regression/cv3b.png)
+
+
+
