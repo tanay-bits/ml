@@ -54,7 +54,7 @@ def tanh_grad_descent(x,y,i):
     # initialize weights etc.,
     b,w,c,v = initialize(i)
     P = size(x)
-    M = 4            # number of neural network bases features to use
+    M = 4            # number of neural network basis features to use
     alpha = 10**-3
     l_p = ones((P,1))
 
@@ -66,7 +66,6 @@ def tanh_grad_descent(x,y,i):
     ### main loop
     while k <= max_its:
         # compute gradient
-        ### YOUR CODE GOES HERE
         q = []
         t1 = []
         t2 = []

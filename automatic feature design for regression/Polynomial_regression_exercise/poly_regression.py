@@ -60,7 +60,6 @@ def plot_mses(mses,deg):
 
 # generate poly features
 def poly_features(x,D):
-    ### YOUR CODE GOES HERE
     g = lambda i,j: i**j
     F = g(x, range(D+1)).T
     return(F)
